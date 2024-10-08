@@ -6,16 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.gordeev.api.annotations.Random;
 
-
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User extends BaseModel {
+public class BuildType extends BaseModel {
+    @Random
     private String id;
     @Random
-    private String username;
-    @Random
-    private String password;
-    private Roles roles;
+    private String name;
+    private Project project;
+    private Steps steps;
 }
