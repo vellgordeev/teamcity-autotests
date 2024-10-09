@@ -4,7 +4,7 @@ import org.testng.annotations.Test;
 import ru.gordeev.api.models.BuildType;
 import ru.gordeev.api.models.Project;
 import ru.gordeev.api.requests.CheckedRequests;
-import ru.gordeev.api.requests.unchecked.UncheckedBase;
+import ru.gordeev.api.requests.crud.UncheckedBaseCrud;
 import ru.gordeev.api.spec.Specifications;
 
 import java.util.Arrays;
@@ -43,7 +43,7 @@ public class BuildTypeTest extends BaseApiTest {
 
         userCheckRequests.getRequest(BUILD_TYPES).create(testData.getBuildType());
 
-        new UncheckedBase(Specifications.userAuth(testData.getUser()), BUILD_TYPES)
+        new UncheckedBaseCrud(Specifications.userAuth(testData.getUser()), BUILD_TYPES)
             .create(buildTypeWithSameId)
             .then().assertThat().statusCode(HttpStatus.SC_BAD_REQUEST)
             .body(Matchers.containsString("The build configuration / template ID \"%s\" is already used by another configuration or template".formatted(testData.getBuildType().getId())));

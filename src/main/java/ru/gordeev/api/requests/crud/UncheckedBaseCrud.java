@@ -1,16 +1,16 @@
-package ru.gordeev.api.requests.unchecked;
+package ru.gordeev.api.requests.crud;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import ru.gordeev.api.enums.Endpoint;
 import ru.gordeev.api.models.BaseModel;
-import ru.gordeev.api.requests.CrudInterface;
+import ru.gordeev.api.requests.EndpointActions;
 import ru.gordeev.api.requests.Request;
 
-public class UncheckedBase extends Request implements CrudInterface {
+public class UncheckedBaseCrud extends Request implements CrudInterface, EndpointActions {
 
-    public UncheckedBase(RequestSpecification spec, Endpoint endpoint) {
+    public UncheckedBaseCrud(RequestSpecification spec, Endpoint endpoint) {
         super(spec, endpoint);
     }
 
