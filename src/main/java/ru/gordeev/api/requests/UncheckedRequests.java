@@ -39,7 +39,7 @@ public class UncheckedRequests {
         if (action instanceof UncheckedBaseCrud uncheckedBaseCrud) {
             return uncheckedBaseCrud;
         } else {
-            String message = "Endpoint " + endpoint + " does not support CRUD operations with UncheckedBase";
+            String message = "Endpoint " + endpoint + " does not support CRUD operations with UncheckedBase. Please provide correct implementation.";
             logger.error(message);
             throw new IllegalArgumentException(message);
         }

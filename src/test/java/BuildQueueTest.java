@@ -11,8 +11,9 @@ import ru.gordeev.api.models.Step;
 import ru.gordeev.api.models.Steps;
 import ru.gordeev.api.requests.CheckedRequests;
 import ru.gordeev.api.requests.UncheckedRequests;
-import ru.gordeev.api.requests.non_crud.BuildInterface;
-import ru.gordeev.api.requests.non_crud.unchecked.UncheckedBuildRequests;
+import ru.gordeev.api.requests.non_crud.BuildQueueInterface;
+import ru.gordeev.api.requests.non_crud.checked.CheckedBuildQueueImpl;
+import ru.gordeev.api.requests.non_crud.unchecked.UncheckedBuildQueueImpl;
 import ru.gordeev.api.spec.Specifications;
 
 import java.util.Arrays;
@@ -24,7 +25,7 @@ import static ru.gordeev.api.enums.Endpoint.USERS;
 import static ru.gordeev.api.generators.TestDataGenerator.generate;
 import static ru.gordeev.api.utils.PollingUtils.waitForCondition;
 
-public class BuildTest extends BaseApiTest {
+public class BuildQueueTest extends BaseApiTest {
 
     @Test(description = "User should be able to start build", groups = {"Positive"})
     public void triggerBuildTest() {
@@ -35,22 +36,22 @@ public class BuildTest extends BaseApiTest {
 
         userCheckRequests.getRequest(BUILD_TYPES).create(testData.getBuildType());
 
-        BuildInterface<Build> request = userCheckRequests.getRequest(Endpoint.BUILD_QUEUE, BuildInterface.class);
+        Build buildQueueBody = generate(Arrays.asList(testData.getProject(), testData.getBuildType()), Build.class, testData.getBuildType());
 
-        Build build = generate(Arrays.asList(testData.getProject(), testData.getBuildType()), Build.class, testData.getBuildType());
+        testData.getBuildType().setSteps(Steps.builder()
+            .count(1)
+            .step(List.of(Step.builder()
+                .name("Print Hello World")
+                .properties(new Properties()
+                    .addProperty("use.custom.script", "false")
+                    .addProperty("command.executable", "echo")
+                    .addProperty("command.parameters", "Hello World")).build()))
+            .build());
 
-        Step buildStep = new Step();
-        buildStep.setName("Print Hello World");
-        Properties stepProperties = new Properties();
-        stepProperties.addProperty("use.custom.script", "false");
-        stepProperties.addProperty("command.executable", "echo");
-        stepProperties.addProperty("command.parameters", "Hello World");
-        buildStep.setProperties(stepProperties);
+        buildQueueBody.setBuildType(testData.getBuildType());
 
-        testData.getBuildType().setSteps(Steps.builder().count(1).step(List.of(buildStep)).build());
-        build.setBuildType(testData.getBuildType());
-
-        var buildId = request.triggerBuild(build).getId();
+        BuildQueueInterface<Build> request = userCheckRequests.getRequest(Endpoint.BUILD_QUEUE, CheckedBuildQueueImpl.class);
+        var buildId = request.triggerBuild(buildQueueBody).getId();
 
         Build finishedBuild = waitForCondition(
             () -> request.getBuildById(buildId),
@@ -67,12 +68,11 @@ public class BuildTest extends BaseApiTest {
 
         UncheckedRequests uncheckedRequests = new UncheckedRequests(Specifications.userAuth(testData.getUser()));
 
-        var request = uncheckedRequests.getRequest(Endpoint.BUILD_QUEUE, UncheckedBuildRequests.class);
-
         Build invalidBuild = new Build();
         invalidBuild.setBuildType(null);
 
-        request.triggerBuild(invalidBuild)
+        uncheckedRequests.getRequest(Endpoint.BUILD_QUEUE, UncheckedBuildQueueImpl.class)
+            .triggerBuild(invalidBuild)
             .then()
             .assertThat()
             .statusCode(HttpStatus.SC_BAD_REQUEST)

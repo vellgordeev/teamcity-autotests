@@ -8,11 +8,11 @@ import ru.gordeev.api.models.BaseModel;
 import ru.gordeev.api.models.Build;
 import ru.gordeev.api.requests.EndpointActions;
 import ru.gordeev.api.requests.Request;
-import ru.gordeev.api.requests.non_crud.BuildInterface;
+import ru.gordeev.api.requests.non_crud.BuildQueueInterface;
 
-public class CheckedBuildRequests extends Request implements BuildInterface<Build>, EndpointActions {
+public class CheckedBuildQueueImpl extends Request implements BuildQueueInterface<Build>, EndpointActions {
 
-    public CheckedBuildRequests(RequestSpecification spec, Endpoint endpoint) {
+    public CheckedBuildQueueImpl(RequestSpecification spec, Endpoint endpoint) {
         super(spec, endpoint);
     }
 

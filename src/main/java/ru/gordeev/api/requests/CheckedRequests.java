@@ -41,7 +41,7 @@ public class CheckedRequests {
         if (action instanceof CheckedBaseCrud) {
             return (CheckedBaseCrud<T>) action;
         } else {
-            String message = "Endpoint " + endpoint + " does not support CRUD operations with CheckedBase";
+            String message = "Endpoint " + endpoint + " does not support CRUD operations with CheckedBase. Please provide correct implementation.";
             logger.error(message);
             throw new IllegalArgumentException(message);
         }

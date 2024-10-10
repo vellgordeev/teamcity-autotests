@@ -7,11 +7,11 @@ import ru.gordeev.api.enums.Endpoint;
 import ru.gordeev.api.models.BaseModel;
 import ru.gordeev.api.requests.EndpointActions;
 import ru.gordeev.api.requests.Request;
-import ru.gordeev.api.requests.non_crud.BuildInterface;
+import ru.gordeev.api.requests.non_crud.BuildQueueInterface;
 
-public class UncheckedBuildRequests extends Request implements BuildInterface<Response>, EndpointActions {
+public class UncheckedBuildQueueImpl extends Request implements BuildQueueInterface<Response>, EndpointActions {
 
-    public UncheckedBuildRequests(RequestSpecification spec, Endpoint endpoint) {
+    public UncheckedBuildQueueImpl(RequestSpecification spec, Endpoint endpoint) {
         super(spec, endpoint);
     }
 

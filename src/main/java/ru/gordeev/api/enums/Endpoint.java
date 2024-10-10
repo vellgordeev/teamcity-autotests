@@ -8,9 +8,9 @@ import ru.gordeev.api.models.Project;
 import ru.gordeev.api.models.User;
 import ru.gordeev.api.requests.EndpointActions;
 import ru.gordeev.api.requests.crud.CrudInterface;
-import ru.gordeev.api.requests.non_crud.BuildInterface;
-import ru.gordeev.api.requests.non_crud.checked.CheckedBuildRequests;
-import ru.gordeev.api.requests.non_crud.unchecked.UncheckedBuildRequests;
+import ru.gordeev.api.requests.non_crud.BuildQueueInterface;
+import ru.gordeev.api.requests.non_crud.checked.CheckedBuildQueueImpl;
+import ru.gordeev.api.requests.non_crud.unchecked.UncheckedBuildQueueImpl;
 
 @Getter
 public enum Endpoint {
@@ -21,8 +21,8 @@ public enum Endpoint {
 
     // Non-CRUD endpoints with specific request handlers
     BUILD_QUEUE("/app/rest/buildQueue", Build.class,
-        BuildInterface.class, CheckedBuildRequests.class,
-        UncheckedBuildRequests.class);
+        BuildQueueInterface.class, CheckedBuildQueueImpl.class,
+        UncheckedBuildQueueImpl.class);
 
     private final String url;
     private final Class<? extends BaseModel> modelClass;

@@ -5,7 +5,6 @@ import ru.gordeev.api.models.BuildType;
 import ru.gordeev.api.models.Project;
 import ru.gordeev.api.requests.CheckedRequests;
 import ru.gordeev.api.requests.UncheckedRequests;
-import ru.gordeev.api.requests.crud.UncheckedBaseCrud;
 import ru.gordeev.api.spec.Specifications;
 
 import java.util.Arrays;
