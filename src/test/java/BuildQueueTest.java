@@ -12,8 +12,8 @@ import ru.gordeev.api.models.Steps;
 import ru.gordeev.api.requests.CheckedRequests;
 import ru.gordeev.api.requests.UncheckedRequests;
 import ru.gordeev.api.requests.non_crud.BuildQueueInterface;
-import ru.gordeev.api.requests.non_crud.checked.CheckedBuildQueueImpl;
-import ru.gordeev.api.requests.non_crud.unchecked.UncheckedBuildQueueImpl;
+import ru.gordeev.api.requests.non_crud.checked.CheckedBuildQueueRequest;
+import ru.gordeev.api.requests.non_crud.unchecked.UncheckedBuildQueueRequest;
 import ru.gordeev.api.spec.Specifications;
 
 import java.util.Arrays;
@@ -50,7 +50,7 @@ public class BuildQueueTest extends BaseApiTest {
 
         buildQueueBody.setBuildType(testData.getBuildType());
 
-        BuildQueueInterface<Build> request = userCheckRequests.getRequest(Endpoint.BUILD_QUEUE, CheckedBuildQueueImpl.class);
+        BuildQueueInterface<Build> request = userCheckRequests.getRequest(Endpoint.BUILD_QUEUE, CheckedBuildQueueRequest.class);
         var buildId = request.triggerBuild(buildQueueBody).getId();
 
         Build finishedBuild = waitForCondition(
@@ -71,7 +71,7 @@ public class BuildQueueTest extends BaseApiTest {
         Build invalidBuild = new Build();
         invalidBuild.setBuildType(null);
 
-        uncheckedRequests.getRequest(Endpoint.BUILD_QUEUE, UncheckedBuildQueueImpl.class)
+        uncheckedRequests.getRequest(Endpoint.BUILD_QUEUE, UncheckedBuildQueueRequest.class)
             .triggerBuild(invalidBuild)
             .then()
             .assertThat()

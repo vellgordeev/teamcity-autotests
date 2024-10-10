@@ -10,9 +10,9 @@ import ru.gordeev.api.requests.EndpointActions;
 import ru.gordeev.api.requests.Request;
 import ru.gordeev.api.requests.non_crud.BuildQueueInterface;
 
-public class CheckedBuildQueueImpl extends Request implements BuildQueueInterface<Build>, EndpointActions {
+public class CheckedBuildQueueRequest extends Request implements BuildQueueInterface<Build>, EndpointActions {
 
-    public CheckedBuildQueueImpl(RequestSpecification spec, Endpoint endpoint) {
+    public CheckedBuildQueueRequest(RequestSpecification spec, Endpoint endpoint) {
         super(spec, endpoint);
     }
 
