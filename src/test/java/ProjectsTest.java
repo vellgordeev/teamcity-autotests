@@ -14,7 +14,7 @@ import static ru.gordeev.api.enums.Endpoint.USERS;
 public class ProjectsTest extends BaseApiTest {
 
     @Test(description = "User should be able to find project by their name", groups = {"Positive"})
-    public void userCreatesBuildTypeTest() {
+    public void userFindsProjectByTheirName() {
         superUserCheckRequests.getRequest(USERS).create(testData.getUser());
         var userCheckRequests = new CheckedRequests(Specifications.userAuth(testData.getUser()));
 
