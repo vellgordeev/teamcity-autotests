@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.gordeev.api.annotations.Random;
 
 @Builder
 @Data
@@ -14,4 +15,6 @@ public class Step extends BaseModel {
     private String name;
     @Builder.Default
     private String type = "simpleRunner";
+    @Random
+    private Properties properties;
 }

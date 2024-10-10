@@ -1,27 +1,26 @@
-package ru.gordeev.api.requests.checked;
+package ru.gordeev.api.requests.crud;
 
 import io.restassured.specification.RequestSpecification;
 import org.apache.http.HttpStatus;
 import ru.gordeev.api.enums.Endpoint;
 import ru.gordeev.api.models.BaseModel;
-import ru.gordeev.api.requests.CrudInterface;
+import ru.gordeev.api.requests.EndpointActions;
 import ru.gordeev.api.requests.Request;
-import ru.gordeev.api.requests.unchecked.UncheckedBase;
 import ru.gordeev.api.utils.TestDataStorage;
 
 @SuppressWarnings("unchecked")
-public class CheckedBase<T extends BaseModel> extends Request implements CrudInterface {
-    private final UncheckedBase uncheckedBase;
+public class CheckedBaseCrud<T extends BaseModel> extends Request implements CrudInterface, EndpointActions {
+    private final UncheckedBaseCrud uncheckedBaseCrud;
 
-    public CheckedBase(RequestSpecification spec, Endpoint endpoint) {
+    public CheckedBaseCrud(RequestSpecification spec, Endpoint endpoint) {
         super(spec, endpoint);
 
-        this.uncheckedBase = new UncheckedBase(spec, endpoint);
+        this.uncheckedBaseCrud = new UncheckedBaseCrud(spec, endpoint);
     }
 
     @Override
     public T create(BaseModel model) {
-        var createdModel =  (T) uncheckedBase.create(model)
+        var createdModel =  (T) uncheckedBaseCrud.create(model)
             .then()
             .assertThat().statusCode(HttpStatus.SC_OK)
             .extract().as(endpoint.getModelClass());
@@ -32,7 +31,7 @@ public class CheckedBase<T extends BaseModel> extends Request implements CrudInt
 
     @Override
     public T read(String id) {
-        return (T) uncheckedBase
+        return (T) uncheckedBaseCrud
             .read(id)
             .then().assertThat().statusCode(HttpStatus.SC_OK)
             .extract().as(endpoint.getModelClass());
@@ -40,7 +39,7 @@ public class CheckedBase<T extends BaseModel> extends Request implements CrudInt
 
     @Override
     public T update(String id, BaseModel model) {
-        return (T) uncheckedBase
+        return (T) uncheckedBaseCrud
             .update(id, model)
             .then().assertThat().statusCode(HttpStatus.SC_OK)
             .extract().as(endpoint.getModelClass());
@@ -48,7 +47,7 @@ public class CheckedBase<T extends BaseModel> extends Request implements CrudInt
 
     @Override
     public Object delete(String id) {
-        return uncheckedBase
+        return uncheckedBaseCrud
             .delete(id)
             .then().assertThat().statusCode(HttpStatus.SC_OK)
             .extract().asString();

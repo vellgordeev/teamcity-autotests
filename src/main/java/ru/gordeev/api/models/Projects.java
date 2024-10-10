@@ -4,17 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.gordeev.api.annotations.Random;
 
 import java.util.List;
-
 
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Steps extends BaseModel {
+public class Projects extends BaseModel {
     private Integer count;
-    @Random
-    private List<Step> step;
+    private String href;
+    private String nextHref;
+    private String prevHref;
+    private List<Project> project;
 }
