@@ -3,7 +3,7 @@ package ru.gordeev.api.requests;
 import io.restassured.specification.RequestSpecification;
 import ru.gordeev.api.enums.Endpoint;
 
-public class Request {
+public abstract class Request {
     /**
      * Request is a class that describes the variable parameters of a request, such as:
      * specification, endpoint (relative URL, model).

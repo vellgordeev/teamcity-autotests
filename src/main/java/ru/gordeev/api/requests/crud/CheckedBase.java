@@ -1,16 +1,20 @@
-package ru.gordeev.api.requests.checked;
+package ru.gordeev.api.requests.crud;
 
+import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
 import org.apache.http.HttpStatus;
 import ru.gordeev.api.enums.Endpoint;
 import ru.gordeev.api.models.BaseModel;
-import ru.gordeev.api.requests.CrudInterface;
+import ru.gordeev.api.models.Projects;
+import ru.gordeev.api.requests.EndpointActions;
 import ru.gordeev.api.requests.Request;
-import ru.gordeev.api.requests.unchecked.UncheckedBase;
+import ru.gordeev.api.requests.non_crud.SearchProjectsInterface;
 import ru.gordeev.api.utils.TestDataStorage;
 
+import java.util.Map;
+
 @SuppressWarnings("unchecked")
-public class CheckedBase<T extends BaseModel> extends Request implements CrudInterface {
+public class CheckedBase<T extends BaseModel> extends Request implements CrudInterface, SearchProjectsInterface<T>, EndpointActions {
     private final UncheckedBase uncheckedBase;
 
     public CheckedBase(RequestSpecification spec, Endpoint endpoint) {
@@ -52,5 +56,17 @@ public class CheckedBase<T extends BaseModel> extends Request implements CrudInt
             .delete(id)
             .then().assertThat().statusCode(HttpStatus.SC_OK)
             .extract().asString();
+    }
+
+    @Override
+    public Projects searchProject(Map searchParams) {
+        return RestAssured
+                .given()
+                .spec(spec)
+                .queryParams(searchParams)
+                .get(endpoint.getUrl())
+                .then()
+                .assertThat().statusCode(HttpStatus.SC_OK)
+                .extract().as(Projects.class);
     }
 }

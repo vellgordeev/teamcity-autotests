@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.gordeev.api.enums.Endpoint;
 import ru.gordeev.api.models.BaseModel;
-import ru.gordeev.api.requests.unchecked.UncheckedBase;
+import ru.gordeev.api.requests.crud.UncheckedBase;
 import ru.gordeev.api.spec.Specifications;
 
 import java.util.EnumMap;

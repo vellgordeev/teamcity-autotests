@@ -1,19 +1,19 @@
+package ru.gordeev.tests.api;
+
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matchers;
 import org.testng.annotations.Test;
+import ru.gordeev.api.generators.TestDataGenerator;
 import ru.gordeev.api.models.BuildType;
 import ru.gordeev.api.models.Project;
 import ru.gordeev.api.requests.CheckedRequests;
-import ru.gordeev.api.requests.unchecked.UncheckedBase;
+import ru.gordeev.api.requests.UncheckedRequests;
 import ru.gordeev.api.spec.Specifications;
 
 import java.util.Arrays;
 
 import static io.qameta.allure.Allure.step;
-import static ru.gordeev.api.enums.Endpoint.BUILD_TYPES;
-import static ru.gordeev.api.enums.Endpoint.PROJECTS;
-import static ru.gordeev.api.enums.Endpoint.USERS;
-import static ru.gordeev.api.generators.TestDataGenerator.generate;
+import static ru.gordeev.api.enums.Endpoint.*;
 
 @Test(groups = {"Regression"})
 public class BuildTypeTest extends BaseApiTest {
@@ -34,7 +34,7 @@ public class BuildTypeTest extends BaseApiTest {
 
     @Test(description = "User should not be able to create two build types with the same id", groups = {"Negative", "CRUD"})
     public void userCreatesTwoBuildTypesWithTheSameIdTest() {
-        var buildTypeWithSameId = generate(Arrays.asList(testData.getProject()), BuildType.class, testData.getBuildType().getId());
+        var buildTypeWithSameId = TestDataGenerator.generate(Arrays.asList(testData.getProject()), BuildType.class, testData.getBuildType().getId());
 
         superUserCheckRequests.getRequest(USERS).create(testData.getUser());
         var userCheckRequests = new CheckedRequests(Specifications.userAuth(testData.getUser()));
@@ -43,7 +43,7 @@ public class BuildTypeTest extends BaseApiTest {
 
         userCheckRequests.getRequest(BUILD_TYPES).create(testData.getBuildType());
 
-        new UncheckedBase(Specifications.userAuth(testData.getUser()), BUILD_TYPES)
+        new UncheckedRequests(Specifications.userAuth(testData.getUser())).getRequest(BUILD_TYPES)
             .create(buildTypeWithSameId)
             .then().assertThat().statusCode(HttpStatus.SC_BAD_REQUEST)
             .body(Matchers.containsString("The build configuration / template ID \"%s\" is already used by another configuration or template".formatted(testData.getBuildType().getId())));
