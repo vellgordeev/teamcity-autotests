@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.gordeev.api.enums.Endpoint;
 import ru.gordeev.api.models.BaseModel;
-import ru.gordeev.api.requests.crud.UncheckedBaseCrud;
+import ru.gordeev.api.requests.crud.UncheckedBase;
 import ru.gordeev.api.spec.Specifications;
 
 import java.util.EnumMap;
@@ -62,7 +62,7 @@ public class TestDataStorage {
     public void deleteCreatedEntities() {
         createdEntitiesMap.forEach(((endpoint, ids) ->
                 ids.forEach(id ->
-                    new UncheckedBaseCrud(Specifications.superUserAuth(), endpoint).delete(id)
+                    new UncheckedBase(Specifications.superUserAuth(), endpoint).delete(id)
                 )
             )
 

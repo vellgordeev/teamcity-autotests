@@ -1,20 +1,12 @@
 package ru.gordeev.api.enums;
 
 import lombok.Getter;
-import ru.gordeev.api.models.BaseModel;
-import ru.gordeev.api.models.Build;
-import ru.gordeev.api.models.BuildType;
-import ru.gordeev.api.models.Project;
-import ru.gordeev.api.models.Projects;
-import ru.gordeev.api.models.User;
+import ru.gordeev.api.models.*;
 import ru.gordeev.api.requests.EndpointActions;
 import ru.gordeev.api.requests.crud.CrudInterface;
 import ru.gordeev.api.requests.non_crud.BuildQueueInterface;
-import ru.gordeev.api.requests.non_crud.SearchProjectsInterface;
 import ru.gordeev.api.requests.non_crud.checked.CheckedBuildQueueRequest;
-import ru.gordeev.api.requests.non_crud.checked.CheckedSearchProjectsRequest;
 import ru.gordeev.api.requests.non_crud.unchecked.UncheckedBuildQueueRequest;
-import ru.gordeev.api.requests.non_crud.unchecked.UncheckedSearchProjectsRequest;
 
 @Getter
 public enum Endpoint {
@@ -26,10 +18,7 @@ public enum Endpoint {
     // Non-CRUD endpoints with specific request handlers
     BUILD_QUEUE("/app/rest/buildQueue", Build.class,
         BuildQueueInterface.class, CheckedBuildQueueRequest.class,
-        UncheckedBuildQueueRequest.class),
-    SEARCH_PROJECTS("/app/rest/projects", Projects.class,
-        SearchProjectsInterface.class, CheckedSearchProjectsRequest.class,
-        UncheckedSearchProjectsRequest.class);
+        UncheckedBuildQueueRequest.class);
 
     private final String url;
     private final Class<? extends BaseModel> modelClass;

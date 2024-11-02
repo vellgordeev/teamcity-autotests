@@ -5,7 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.gordeev.api.enums.Endpoint;
 import ru.gordeev.api.models.BaseModel;
-import ru.gordeev.api.requests.crud.CheckedBaseCrud;
+import ru.gordeev.api.requests.crud.CheckedBase;
 import ru.gordeev.api.requests.crud.CrudInterface;
 
 import java.lang.reflect.Constructor;
@@ -20,7 +20,7 @@ public class CheckedRequests {
             try {
                 EndpointActions requestHandler;
                 if (endpoint.getActionsClass() == CrudInterface.class) {
-                    requestHandler = new CheckedBaseCrud<>(spec, endpoint);
+                    requestHandler = new CheckedBase<>(spec, endpoint);
                 } else {
                     Constructor<? extends EndpointActions> constructor =
                         endpoint.getCheckedRequestHandlerClass()
@@ -36,10 +36,10 @@ public class CheckedRequests {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends BaseModel> CheckedBaseCrud<T> getRequest(Endpoint endpoint) {
+    public <T extends BaseModel> CheckedBase<T> getRequest(Endpoint endpoint) {
         EndpointActions action = requests.get(endpoint);
-        if (action instanceof CheckedBaseCrud) {
-            return (CheckedBaseCrud<T>) action;
+        if (action instanceof CheckedBase) {
+            return (CheckedBase<T>) action;
         } else {
             String message = "Endpoint " + endpoint + " does not support CRUD operations with CheckedBase. Please provide correct implementation.";
             logger.error(message);

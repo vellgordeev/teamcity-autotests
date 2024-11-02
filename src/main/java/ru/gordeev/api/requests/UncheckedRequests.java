@@ -5,7 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.gordeev.api.enums.Endpoint;
 import ru.gordeev.api.requests.crud.CrudInterface;
-import ru.gordeev.api.requests.crud.UncheckedBaseCrud;
+import ru.gordeev.api.requests.crud.UncheckedBase;
 
 import java.lang.reflect.Constructor;
 import java.util.EnumMap;
@@ -19,7 +19,7 @@ public class UncheckedRequests {
             try {
                 EndpointActions requestHandler;
                 if (endpoint.getActionsClass() == CrudInterface.class) {
-                    requestHandler = new UncheckedBaseCrud(spec, endpoint);
+                    requestHandler = new UncheckedBase(spec, endpoint);
                 } else {
                     Constructor<? extends EndpointActions> constructor =
                         endpoint.getUncheckedRequestHandlerClass()
@@ -34,10 +34,10 @@ public class UncheckedRequests {
         }
     }
 
-    public UncheckedBaseCrud getRequest(Endpoint endpoint) {
+    public UncheckedBase getRequest(Endpoint endpoint) {
         EndpointActions action = requests.get(endpoint);
-        if (action instanceof UncheckedBaseCrud uncheckedBaseCrud) {
-            return uncheckedBaseCrud;
+        if (action instanceof UncheckedBase uncheckedBase) {
+            return uncheckedBase;
         } else {
             String message = "Endpoint " + endpoint + " does not support CRUD operations with UncheckedBase. Please provide correct implementation.";
             logger.error(message);

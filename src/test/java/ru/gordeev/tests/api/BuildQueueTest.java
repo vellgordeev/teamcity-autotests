@@ -1,14 +1,13 @@
+package ru.gordeev.tests.api;
+
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matchers;
 import org.testng.annotations.Test;
 import ru.gordeev.api.enums.BuildState;
 import ru.gordeev.api.enums.BuildStatus;
 import ru.gordeev.api.enums.Endpoint;
-import ru.gordeev.api.models.Build;
-import ru.gordeev.api.models.Project;
-import ru.gordeev.api.models.Properties;
-import ru.gordeev.api.models.Step;
-import ru.gordeev.api.models.Steps;
+import ru.gordeev.api.generators.TestDataGenerator;
+import ru.gordeev.api.models.*;
 import ru.gordeev.api.requests.CheckedRequests;
 import ru.gordeev.api.requests.UncheckedRequests;
 import ru.gordeev.api.requests.non_crud.BuildQueueInterface;
@@ -19,10 +18,7 @@ import ru.gordeev.api.spec.Specifications;
 import java.util.Arrays;
 import java.util.List;
 
-import static ru.gordeev.api.enums.Endpoint.BUILD_TYPES;
-import static ru.gordeev.api.enums.Endpoint.PROJECTS;
-import static ru.gordeev.api.enums.Endpoint.USERS;
-import static ru.gordeev.api.generators.TestDataGenerator.generate;
+import static ru.gordeev.api.enums.Endpoint.*;
 import static ru.gordeev.api.utils.PollingUtils.waitForCondition;
 
 public class BuildQueueTest extends BaseApiTest {
@@ -36,7 +32,7 @@ public class BuildQueueTest extends BaseApiTest {
 
         userCheckRequests.getRequest(BUILD_TYPES).create(testData.getBuildType());
 
-        Build buildQueueBody = generate(Arrays.asList(testData.getProject(), testData.getBuildType()), Build.class, testData.getBuildType());
+        Build buildQueueBody = TestDataGenerator.generate(Arrays.asList(testData.getProject(), testData.getBuildType()), Build.class, testData.getBuildType());
 
         testData.getBuildType().setSteps(Steps.builder()
             .count(1)

@@ -1,26 +1,31 @@
 package ru.gordeev.api.requests.crud;
 
+import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
 import org.apache.http.HttpStatus;
 import ru.gordeev.api.enums.Endpoint;
 import ru.gordeev.api.models.BaseModel;
+import ru.gordeev.api.models.Projects;
 import ru.gordeev.api.requests.EndpointActions;
 import ru.gordeev.api.requests.Request;
+import ru.gordeev.api.requests.non_crud.SearchProjectsInterface;
 import ru.gordeev.api.utils.TestDataStorage;
 
-@SuppressWarnings("unchecked")
-public class CheckedBaseCrud<T extends BaseModel> extends Request implements CrudInterface, EndpointActions {
-    private final UncheckedBaseCrud uncheckedBaseCrud;
+import java.util.Map;
 
-    public CheckedBaseCrud(RequestSpecification spec, Endpoint endpoint) {
+@SuppressWarnings("unchecked")
+public class CheckedBase<T extends BaseModel> extends Request implements CrudInterface, SearchProjectsInterface<T>, EndpointActions {
+    private final UncheckedBase uncheckedBase;
+
+    public CheckedBase(RequestSpecification spec, Endpoint endpoint) {
         super(spec, endpoint);
 
-        this.uncheckedBaseCrud = new UncheckedBaseCrud(spec, endpoint);
+        this.uncheckedBase = new UncheckedBase(spec, endpoint);
     }
 
     @Override
     public T create(BaseModel model) {
-        var createdModel =  (T) uncheckedBaseCrud.create(model)
+        var createdModel =  (T) uncheckedBase.create(model)
             .then()
             .assertThat().statusCode(HttpStatus.SC_OK)
             .extract().as(endpoint.getModelClass());
@@ -31,7 +36,7 @@ public class CheckedBaseCrud<T extends BaseModel> extends Request implements Cru
 
     @Override
     public T read(String id) {
-        return (T) uncheckedBaseCrud
+        return (T) uncheckedBase
             .read(id)
             .then().assertThat().statusCode(HttpStatus.SC_OK)
             .extract().as(endpoint.getModelClass());
@@ -39,7 +44,7 @@ public class CheckedBaseCrud<T extends BaseModel> extends Request implements Cru
 
     @Override
     public T update(String id, BaseModel model) {
-        return (T) uncheckedBaseCrud
+        return (T) uncheckedBase
             .update(id, model)
             .then().assertThat().statusCode(HttpStatus.SC_OK)
             .extract().as(endpoint.getModelClass());
@@ -47,9 +52,21 @@ public class CheckedBaseCrud<T extends BaseModel> extends Request implements Cru
 
     @Override
     public Object delete(String id) {
-        return uncheckedBaseCrud
+        return uncheckedBase
             .delete(id)
             .then().assertThat().statusCode(HttpStatus.SC_OK)
             .extract().asString();
+    }
+
+    @Override
+    public Projects searchProject(Map searchParams) {
+        return RestAssured
+                .given()
+                .spec(spec)
+                .queryParams(searchParams)
+                .get(endpoint.getUrl())
+                .then()
+                .assertThat().statusCode(HttpStatus.SC_OK)
+                .extract().as(Projects.class);
     }
 }

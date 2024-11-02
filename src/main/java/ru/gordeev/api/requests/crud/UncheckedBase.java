@@ -7,10 +7,13 @@ import ru.gordeev.api.enums.Endpoint;
 import ru.gordeev.api.models.BaseModel;
 import ru.gordeev.api.requests.EndpointActions;
 import ru.gordeev.api.requests.Request;
+import ru.gordeev.api.requests.non_crud.SearchProjectsInterface;
 
-public class UncheckedBaseCrud extends Request implements CrudInterface, EndpointActions {
+import java.util.Map;
 
-    public UncheckedBaseCrud(RequestSpecification spec, Endpoint endpoint) {
+public class UncheckedBase extends Request implements CrudInterface, SearchProjectsInterface<Response>, EndpointActions {
+
+    public UncheckedBase(RequestSpecification spec, Endpoint endpoint) {
         super(spec, endpoint);
     }
 
@@ -46,5 +49,14 @@ public class UncheckedBaseCrud extends Request implements CrudInterface, Endpoin
             .given()
             .spec(spec)
             .delete(endpoint.getUrl() + "/id:" + id);
+    }
+
+    @Override
+    public Response searchProject(Map<String, String> searchParams) {
+        return RestAssured
+                .given()
+                .spec(spec)
+                .queryParams(searchParams)
+                .get(endpoint.getUrl());
     }
 }
