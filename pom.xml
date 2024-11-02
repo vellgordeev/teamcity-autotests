@@ -20,6 +20,7 @@
         <allure.version>2.29.0</allure.version>
         <jackson.version>2.17.2</jackson.version>
         <awaitility.version>4.2.2</awaitility.version>
+        <selenide.version>7.4.3</selenide.version>
     </properties>
 
     <dependencies>
@@ -73,6 +74,12 @@
             <groupId>org.awaitility</groupId>
             <artifactId>awaitility</artifactId>
             <version>${awaitility.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.codeborne</groupId>
+            <artifactId>selenide</artifactId>
+            <version>${selenide.version}</version>
         </dependency>
     </dependencies>
 
