@@ -8,6 +8,7 @@ import ru.gordeev.web.elements.ProjectElement;
 
 import java.util.List;
 
+import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
@@ -28,6 +29,7 @@ public class ProjectsPage extends BasePage {
     }
 
     public List<ProjectElement> getProjects() {
+        projectElements.shouldBe(sizeGreaterThan(0));
         return generatePageElements(projectElements, ProjectElement::new);
     }
 }
