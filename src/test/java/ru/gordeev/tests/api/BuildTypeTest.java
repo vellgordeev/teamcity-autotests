@@ -3,17 +3,17 @@ package ru.gordeev.tests.api;
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matchers;
 import org.testng.annotations.Test;
-import ru.gordeev.api.generators.TestDataGenerator;
-import ru.gordeev.api.models.BuildType;
-import ru.gordeev.api.models.Project;
-import ru.gordeev.api.requests.CheckedRequests;
-import ru.gordeev.api.requests.UncheckedRequests;
-import ru.gordeev.api.spec.Specifications;
+import ru.gordeev.teamcity.api.generators.TestDataGenerator;
+import ru.gordeev.teamcity.api.models.BuildType;
+import ru.gordeev.teamcity.api.models.Project;
+import ru.gordeev.teamcity.api.requests.CheckedRequests;
+import ru.gordeev.teamcity.api.requests.UncheckedRequests;
+import ru.gordeev.teamcity.api.spec.Specifications;
 
 import java.util.Arrays;
 
 import static io.qameta.allure.Allure.step;
-import static ru.gordeev.api.enums.Endpoint.*;
+import static ru.gordeev.teamcity.api.enums.Endpoint.*;
 
 @Test(groups = {"Regression"})
 public class BuildTypeTest extends BaseApiTest {

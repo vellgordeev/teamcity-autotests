@@ -1,0 +1,26 @@
+name: Teamcity deployment
+
+on: push
+
+jobs:
+  # Build backend and deploy to the staging/pre-prod environment
+  backend:
+    uses: ./.github/workflows/backend-stage.yml
+
+  # Build frontend and deploy to the staging/pre-prod environment
+  frontend:
+    uses: ./.github/workflows/frontend-stage.yml
+
+  # Run API tests after backend and frontend jobs are completed
+  automation-api:
+    needs: [backend, frontend]
+    uses: ./.github/workflows/automation.yml
+    with:
+      package: api
+
+  # Run UI tests after backend and frontend jobs are completed
+  automation-ui:
+    needs: [ backend, frontend ]
+    uses: ./.github/workflows/automation.yml
+    with:
+      package: ui

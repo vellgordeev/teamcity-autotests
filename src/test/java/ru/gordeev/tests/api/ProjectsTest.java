@@ -1,17 +1,17 @@
 package ru.gordeev.tests.api;
 
 import org.testng.annotations.Test;
-import ru.gordeev.api.models.Project;
-import ru.gordeev.api.requests.CheckedRequests;
-import ru.gordeev.api.requests.crud.CheckedBase;
-import ru.gordeev.api.spec.Specifications;
-import ru.gordeev.api.utils.TestDataStorage;
+import ru.gordeev.teamcity.api.models.Project;
+import ru.gordeev.teamcity.api.requests.CheckedRequests;
+import ru.gordeev.teamcity.api.requests.crud.CheckedBase;
+import ru.gordeev.teamcity.api.spec.Specifications;
+import ru.gordeev.teamcity.api.utils.TestDataStorage;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static ru.gordeev.api.enums.Endpoint.PROJECTS;
-import static ru.gordeev.api.enums.Endpoint.USERS;
+import static ru.gordeev.teamcity.api.enums.Endpoint.PROJECTS;
+import static ru.gordeev.teamcity.api.enums.Endpoint.USERS;
 
 @Test(groups = {"Regression"})
 public class ProjectsTest extends BaseApiTest {

@@ -2,13 +2,13 @@ package ru.gordeev.tests.api;
 
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
-import ru.gordeev.api.models.AuthModules;
-import ru.gordeev.api.models.ServerAuthSettings;
-import ru.gordeev.api.requests.non_crud.ServerAuthRequest;
-import ru.gordeev.api.spec.Specifications;
+import ru.gordeev.teamcity.api.models.AuthModules;
+import ru.gordeev.teamcity.api.models.ServerAuthSettings;
+import ru.gordeev.teamcity.api.requests.non_crud.ServerAuthRequest;
+import ru.gordeev.teamcity.api.spec.Specifications;
 import ru.gordeev.tests.BaseTest;
 
-import static ru.gordeev.api.generators.TestDataGenerator.generate;
+import static ru.gordeev.teamcity.api.generators.TestDataGenerator.generate;
 
 public class BaseApiTest extends BaseTest {
     private final ServerAuthRequest serverAuthRequest = new ServerAuthRequest(Specifications.superUserAuth());

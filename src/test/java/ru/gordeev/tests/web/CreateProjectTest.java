@@ -3,11 +3,11 @@ package ru.gordeev.tests.web;
 import com.codeborne.selenide.Condition;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import ru.gordeev.api.enums.Endpoint;
-import ru.gordeev.api.models.Project;
-import ru.gordeev.web.pages.ProjectPage;
-import ru.gordeev.web.pages.ProjectsPage;
-import ru.gordeev.web.pages.create.CreateProjectPage;
+import ru.gordeev.teamcity.api.enums.Endpoint;
+import ru.gordeev.teamcity.api.models.Project;
+import ru.gordeev.teamcity.web.pages.ProjectPage;
+import ru.gordeev.teamcity.web.pages.ProjectsPage;
+import ru.gordeev.teamcity.web.pages.create.CreateProjectPage;
 
 import static com.codeborne.selenide.Condition.exactText;
 

@@ -4,11 +4,11 @@ import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeSuite;
-import ru.gordeev.api.config.Config;
-import ru.gordeev.api.enums.Endpoint;
-import ru.gordeev.api.models.User;
+import ru.gordeev.teamcity.api.config.Config;
+import ru.gordeev.teamcity.api.enums.Endpoint;
+import ru.gordeev.teamcity.api.models.User;
+import ru.gordeev.teamcity.web.pages.LoginPage;
 import ru.gordeev.tests.BaseTest;
-import ru.gordeev.web.pages.LoginPage;
 
 import java.util.Map;
 

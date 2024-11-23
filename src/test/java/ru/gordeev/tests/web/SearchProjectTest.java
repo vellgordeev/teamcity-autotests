@@ -1,13 +1,13 @@
 package ru.gordeev.tests.web;
 
 import org.testng.annotations.Test;
-import ru.gordeev.api.models.Project;
-import ru.gordeev.api.requests.CheckedRequests;
-import ru.gordeev.api.spec.Specifications;
-import ru.gordeev.web.pages.NavigationPanel;
-import ru.gordeev.web.pages.ProjectsPage;
+import ru.gordeev.teamcity.api.models.Project;
+import ru.gordeev.teamcity.api.requests.CheckedRequests;
+import ru.gordeev.teamcity.api.spec.Specifications;
+import ru.gordeev.teamcity.web.pages.NavigationPanel;
+import ru.gordeev.teamcity.web.pages.ProjectsPage;
 
-import static ru.gordeev.api.enums.Endpoint.PROJECTS;
+import static ru.gordeev.teamcity.api.enums.Endpoint.PROJECTS;
 
 @Test(groups = {"Regression"})
 public class SearchProjectTest extends BaseUiTest {

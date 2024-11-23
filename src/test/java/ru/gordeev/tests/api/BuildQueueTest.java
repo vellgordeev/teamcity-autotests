@@ -3,23 +3,23 @@ package ru.gordeev.tests.api;
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matchers;
 import org.testng.annotations.Test;
-import ru.gordeev.api.enums.BuildState;
-import ru.gordeev.api.enums.BuildStatus;
-import ru.gordeev.api.enums.Endpoint;
-import ru.gordeev.api.generators.TestDataGenerator;
-import ru.gordeev.api.models.*;
-import ru.gordeev.api.requests.CheckedRequests;
-import ru.gordeev.api.requests.UncheckedRequests;
-import ru.gordeev.api.requests.non_crud.BuildQueueInterface;
-import ru.gordeev.api.requests.non_crud.checked.CheckedBuildQueueRequest;
-import ru.gordeev.api.requests.non_crud.unchecked.UncheckedBuildQueueRequest;
-import ru.gordeev.api.spec.Specifications;
+import ru.gordeev.teamcity.api.enums.BuildState;
+import ru.gordeev.teamcity.api.enums.BuildStatus;
+import ru.gordeev.teamcity.api.enums.Endpoint;
+import ru.gordeev.teamcity.api.generators.TestDataGenerator;
+import ru.gordeev.teamcity.api.models.*;
+import ru.gordeev.teamcity.api.requests.CheckedRequests;
+import ru.gordeev.teamcity.api.requests.UncheckedRequests;
+import ru.gordeev.teamcity.api.requests.non_crud.BuildQueueInterface;
+import ru.gordeev.teamcity.api.requests.non_crud.checked.CheckedBuildQueueRequest;
+import ru.gordeev.teamcity.api.requests.non_crud.unchecked.UncheckedBuildQueueRequest;
+import ru.gordeev.teamcity.api.spec.Specifications;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static ru.gordeev.api.enums.Endpoint.*;
-import static ru.gordeev.api.utils.PollingUtils.waitForCondition;
+import static ru.gordeev.teamcity.api.enums.Endpoint.*;
+import static ru.gordeev.teamcity.api.utils.PollingUtils.waitForCondition;
 
 @Test(groups = {"Regression"})
 public class BuildQueueTest extends BaseApiTest {

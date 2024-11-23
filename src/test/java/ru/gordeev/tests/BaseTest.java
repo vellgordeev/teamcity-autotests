@@ -4,12 +4,12 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.asserts.SoftAssert;
-import ru.gordeev.api.models.TestData;
-import ru.gordeev.api.requests.CheckedRequests;
-import ru.gordeev.api.requests.UncheckedRequests;
-import ru.gordeev.api.spec.Specifications;
-import ru.gordeev.api.utils.TestDataFactory;
-import ru.gordeev.api.utils.TestDataStorage;
+import ru.gordeev.teamcity.api.models.TestData;
+import ru.gordeev.teamcity.api.requests.CheckedRequests;
+import ru.gordeev.teamcity.api.requests.UncheckedRequests;
+import ru.gordeev.teamcity.api.spec.Specifications;
+import ru.gordeev.teamcity.api.utils.TestDataFactory;
+import ru.gordeev.teamcity.api.utils.TestDataStorage;
 
 public class BaseTest {
     protected SoftAssert softy;
