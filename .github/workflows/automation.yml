@@ -9,7 +9,16 @@ on:
         type: string
 
 jobs:
+  preparation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Make mvnw executable
+        run: chmod +x ./mvnw
+
   validate-checkstyle:
+    needs: preparation
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,25 +29,19 @@ jobs:
           java-version: '17'
           distribution: 'zulu'
 
-      - name: Make mvnw executable
-        run: chmod +x ./mvnw
-
       - name: Validate checkstyle
         run: ./mvnw validate
 
   run-tests:
-    needs: validate-checkstyle
+    needs: [preparation, validate-checkstyle]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Make mvnw executable
-        run: chmod +x ./mvnw
 
       - name: TeamCity setup
         uses: ./.github/actions/teamcity-setup
 
       - name: Run tests
         continue-on-error: true
-        # Specify a group to exclude tests related to setup
+        # Specify a test group to exclude setup-related tests
         run: ./mvnw test -Dtest='ru.gordeev.teamcity.${{inputs.package}}.**' -Dgroups=Regression

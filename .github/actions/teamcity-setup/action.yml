@@ -1,0 +1,68 @@
+name: Teamcity Setup
+
+runs:
+  using: composite
+  steps:
+    - name: Setup JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'zulu'
+
+    - name: Install ifconfig
+      shell: bash
+      run: sudo apt-get update && sudo apt-get install -y net-tools
+
+    - name: Setup host environment variable
+      shell: bash
+      # Command to determine the IP address for cross-container communication, as documented in Selenoid UI: https://aerokube.com/selenoid-ui/latest/
+      run: |
+          echo "HOST=$(ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1)" >> $GITHUB_ENV
+
+    - name: Setup host config property
+      shell: bash
+      # Add the host configuration to the application properties file
+      run: echo "host=$HOST:8111" >> src/main/resources/config.properties
+
+    - name: Pull Selenoid browsers
+      shell: bash
+      # Parse browsers.json and pull all required browser images
+      run: |
+        for browser in $(awk -F'"' '/"image": "/{print $4}' "config/browsers.json"); do
+          docker pull $browser
+        done
+
+    - name: Run Selenoid
+      shell: bash
+      # Use the -d flag to run the container in detached mode
+      run: |
+        docker run -d --name selenoid \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        -v $(pwd)/config/:/etc/selenoid/:ro \
+        -p 4444:4444 \
+        aerokube/selenoid:latest-release
+
+    - name: Run TeamCity Server
+      shell: bash
+      # Use the -u 0 flag to run the container as root, enabling write access to the directories specified in the volumes
+      run: |
+        docker run -u 0 -d --name teamcity-server  \
+        -v $(pwd)/tmp/teamcity_server/datadir:/data/teamcity_server/datadir \
+        -v $(pwd)/tmp/teamcity_server/logs:/opt/teamcity/logs  \
+        -p 8111:8111 \
+        jetbrains/teamcity-server:latest
+
+    - name: Cat config.properties
+      shell: bash
+      # Display the contents of the config.properties file for debugging purposes
+      run: cat src/main/resources/config.properties
+
+      # Initial server setup during the first run (accepting license agreement, selecting database, etc.), implemented as a test
+    - name: Set up Teamcity server
+      shell: bash
+      run: ./mvnw clean test -Dtest=SetupServerTest#setupTeamCityServerTest
+
+    - name: Setup superUserToken environment variable
+      shell: bash
+      # Extract the superuser authentication token from the TeamCity server logs
+      run: echo "SUPER_USER_TOKEN=$(docker logs teamcity-server | grep 'Super user authentication token' | tail -n 1 | awk '{print $6}')" >> $GITHUB_ENV
