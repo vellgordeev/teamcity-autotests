@@ -20,6 +20,9 @@ jobs:
           java-version: '17'
           distribution: 'zulu'
 
+      - name: Make mvnw executable
+        run: chmod +x ./mvnw
+
       - name: Validate checkstyle
         run: ./mvnw validate
 
@@ -28,6 +31,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Make mvnw executable
+        run: chmod +x ./mvnw
 
       - name: TeamCity setup
         uses: ./.github/actions/teamcity-setup

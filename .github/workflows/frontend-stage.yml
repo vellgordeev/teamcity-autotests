@@ -4,13 +4,13 @@ on: workflow_call
 
 # These are approximate steps to illustrate how the frontend pipeline might look
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Build frontend
         run: echo Building the frontend \(running unit tests during the build, executing linters\), creating and publishing a Docker image
   deploy-stage:
-    needs: test
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Deploy frontend to stage/pre-prod app
