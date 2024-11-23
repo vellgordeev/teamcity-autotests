@@ -32,8 +32,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Make mvnw executable
-        run: chmod +x ./mvnw
+      - name: Make mvnw and all scripts executable
+        run: chmod -R +x ./
 
       - name: TeamCity setup
         uses: ./.github/actions/teamcity-setup
