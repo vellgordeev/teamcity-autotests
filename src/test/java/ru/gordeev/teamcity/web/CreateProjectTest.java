@@ -10,6 +10,7 @@ import ru.gordeev.teamcity.web.pages.ProjectsPage;
 import ru.gordeev.teamcity.web.pages.create.CreateProjectPage;
 
 import static com.codeborne.selenide.Condition.exactText;
+import static io.qameta.allure.Allure.step;
 
 @Test(groups = {"Regression"})
 public class CreateProjectTest extends BaseUiTest {
@@ -17,42 +18,51 @@ public class CreateProjectTest extends BaseUiTest {
 
     @Test(description = "User should be able to create project", groups = {"Positive"})
     public void userCreatesProject() {
-        // Set up environment
-        loginAs(testData.getUser());
+        step("Log in as the test user", () -> {
+            loginAs(testData.getUser());
+        });
 
-        // Interact with UI
-        CreateProjectPage.open("_Root")
-                .createForm(REPO_URL)
-                .setupProject(testData.getProject().getName(), testData.getBuildType().getName());
+        step("Create a project using the UI", () -> {
+            CreateProjectPage.open("_Root")
+                    .createForm(REPO_URL)
+                    .setupProject(testData.getProject().getName(), testData.getBuildType().getName());
+        });
 
-        // Verify API state (correct data sent from UI to API)
-        var createdProject = superUserCheckRequests.<Project>getRequest(Endpoint.PROJECTS).read("name:" + testData.getProject().getName());
-        Assert.assertNotNull(createdProject);
+        step("Verify the project was created via API", () -> {
+            var createdProject = superUserCheckRequests.<Project>getRequest(Endpoint.PROJECTS)
+                    .read("name:" + testData.getProject().getName());
+            Assert.assertNotNull(createdProject);
+        });
 
-        // Verify UI state (correct data retrieved and displayed on UI)
-        ProjectPage.open(createdProject.getId())
-                .titleShouldHave(exactText(testData.getProject().getName()));
+        step("Verify the project appears correctly on the UI", () -> {
+            ProjectPage.open(testData.getProject().getId())
+                    .titleShouldHave(exactText(testData.getProject().getName()));
 
-        var foundProjects = ProjectsPage.open()
-                .getProjects().stream()
-                .anyMatch(project -> project.getName().text().equals(testData.getProject().getName()));
+            var foundProjects = ProjectsPage.open()
+                    .getProjects().stream()
+                    .anyMatch(project -> project.getName().text().equals(testData.getProject().getName()));
 
-        softy.assertTrue(foundProjects);
+            softy.assertTrue(foundProjects);
+        });
     }
 
     @Test(description = "User should not be able to create project without name", groups = {"Negative"})
     public void userCreatesProjectWithoutName() {
-        // Set up environment
-        loginAs(testData.getUser());
+        step("Log in as the test user", () -> {
+            loginAs(testData.getUser());
+        });
 
-        // Interact with UI
-        CreateProjectPage.open("_Root")
-                .createForm(REPO_URL)
-                .setupProjectWithoutName(testData.getBuildType().getName())
-                .projectNameInputHasError(Condition.exactText("Project name must not be empty"));
+        step("Attempt to create a project without a name", () -> {
+            CreateProjectPage.open("_Root")
+                    .createForm(REPO_URL)
+                    .setupProjectWithoutName(testData.getBuildType().getName())
+                    .projectNameInputHasError(Condition.exactText("Project name must not be empty"));
+        });
 
-        // Verify API state (incorrect data did not sent from UI to API)
-        var createdProject = superUserUncheckRequests.getRequest(Endpoint.PROJECTS).read("name:" + testData.getProject().getName());
-        softy.assertEquals(createdProject.statusCode(), 404);
+        step("Verify the project was not created via API", () -> {
+            var createdProject = superUserUncheckRequests.getRequest(Endpoint.PROJECTS)
+                    .read("name:" + testData.getProject().getName());
+            softy.assertEquals(createdProject.statusCode(), 404);
+        });
     }
 }

@@ -12,6 +12,7 @@ import ru.gordeev.teamcity.web.pages.ProjectPage;
 import java.util.List;
 
 import static com.codeborne.selenide.Condition.exactText;
+import static io.qameta.allure.Allure.step;
 import static ru.gordeev.teamcity.api.enums.Endpoint.BUILD_TYPES;
 import static ru.gordeev.teamcity.api.enums.Endpoint.PROJECTS;
 
@@ -20,36 +21,50 @@ public class RunBuildTest extends BaseUiTest {
 
     @Test(description = "User should be able to run build", groups = {"Positive"})
     public void userRunBuildTest() {
-        // Set up environment
-        loginAs(testData.getUser());
-        var userCheckRequests = new CheckedRequests(Specifications.userAuth(testData.getUser()));
+        step("Log in as the test user", () -> {
+            loginAs(testData.getUser());
+        });
 
-        userCheckRequests.<Project>getRequest(PROJECTS).create(testData.getProject());
+        step("Create a new project via API", () -> {
+            var userCheckRequests = new CheckedRequests(Specifications.userAuth(testData.getUser()));
+            userCheckRequests.<Project>getRequest(PROJECTS).create(testData.getProject());
+        });
 
-        testData.getBuildType().setSteps(Steps.builder()
-                .count(1)
-                .step(List.of(Step.builder()
-                        .name("Print Hello World")
-                        .properties(new Properties()
-                                .addProperty("use.custom.script", "false")
-                                .addProperty("command.executable", "echo")
-                                .addProperty("command.parameters", "Hello World")).build()))
-                .build());
+        step("Set up a build type with steps via API", () -> {
+            testData.getBuildType().setSteps(Steps.builder()
+                    .count(1)
+                    .step(List.of(Step.builder()
+                            .name("Print Hello World")
+                            .properties(new Properties()
+                                    .addProperty("use.custom.script", "false")
+                                    .addProperty("command.executable", "echo")
+                                    .addProperty("command.parameters", "Hello World")).build()))
+                    .build());
+            var userCheckRequests = new CheckedRequests(Specifications.userAuth(testData.getUser()));
+            userCheckRequests.getRequest(BUILD_TYPES).create(testData.getBuildType());
+        });
 
-        userCheckRequests.getRequest(BUILD_TYPES).create(testData.getBuildType());
+        step("Open the project page and find the latest build", () -> {
+            var latestBuild = ProjectPage.open(testData.getProject().getId())
+                    .titleShouldHave(exactText(testData.getProject().getName()))
+                    .findLatestBuild()
+                    .getLatestBuild();
+            step("Run the latest build", latestBuild::clickRunButton);
+        });
 
-        // Interact with UI
-        var latestBuild = ProjectPage.open(testData.getProject().getId())
-                .titleShouldHave(exactText(testData.getProject().getName()))
-                .findLatestBuild()
-                .getLatestBuild();
-        latestBuild.clickRunButton();
+        step("Verify the build status is successful", () -> {
+            var latestBuild = ProjectPage.open(testData.getProject().getId())
+                    .findLatestBuild()
+                    .getLatestBuild();
+            softy.assertTrue(latestBuild.isBuildSuccessful(), "Build should be successful");
+        });
 
-        // Verify UI build state
-        softy.assertTrue(latestBuild.isBuildSuccessful());
-
-        var buildConfigurationPage = latestBuild.clickSuccessLink();
-
-        buildConfigurationPage.clickBuildLogAndSearchFor("Step 1/1: Print Hello World (Command Line)");
+        step("Verify build log contains step information", () -> {
+            var buildConfigurationPage = ProjectPage.open(testData.getProject().getId())
+                    .findLatestBuild()
+                    .getLatestBuild()
+                    .clickSuccessLink();
+            buildConfigurationPage.clickBuildLogAndSearchFor("Step 1/1: Print Hello World (Command Line)");
+        });
     }
 }

@@ -7,6 +7,7 @@ import ru.gordeev.teamcity.api.spec.Specifications;
 import ru.gordeev.teamcity.web.pages.NavigationPanel;
 import ru.gordeev.teamcity.web.pages.ProjectsPage;
 
+import static io.qameta.allure.Allure.step;
 import static ru.gordeev.teamcity.api.enums.Endpoint.PROJECTS;
 
 @Test(groups = {"Regression"})
@@ -14,20 +15,28 @@ public class SearchProjectTest extends BaseUiTest {
 
     @Test(description = "User should be able to search for a project", groups = {"Positive"})
     public void userSearchProjectTest() {
-        // Set up environment
-        loginAs(testData.getUser());
-        var userCheckRequests = new CheckedRequests(Specifications.userAuth(testData.getUser()));
+        step("Log in as the test user", () -> {
+            loginAs(testData.getUser());
+        });
 
-        // Create project via API
-        userCheckRequests.<Project>getRequest(PROJECTS).create(testData.getProject());
+        step("Create a project via API", () -> {
+            var userCheckRequests = new CheckedRequests(Specifications.userAuth(testData.getUser()));
+            userCheckRequests.<Project>getRequest(PROJECTS).create(testData.getProject());
+        });
 
-        // Interact with UI
-        ProjectsPage.open();
-        NavigationPanel.enterSearchText(testData.getProject().getName());
+        step("Open the Projects Page", () -> {
+            ProjectsPage.open();
+        });
 
-        // Verify project appears in search results
-        softy.assertTrue(NavigationPanel
-                .findProjectInSearchResults(testData.getProject().getName())
-                .isDisplayed(), "Project should appear in the search results");
+        step("Search for the project in the navigation panel", () -> {
+            NavigationPanel.enterSearchText(testData.getProject().getName());
+        });
+
+        step("Verify the project appears in search results", () -> {
+            softy.assertTrue(
+                    NavigationPanel.findProjectInSearchResults(testData.getProject().getName()).isDisplayed(),
+                    "Project should appear in the search results"
+            );
+        });
     }
 }
