@@ -14,14 +14,11 @@ public class LoginPage extends BasePage {
     private SelenideElement inputPassword = $("#password");
     private SelenideElement inputSubmitLogin = $(".loginButton");
 
-    public SelenideElement inputSubmitLogin2 = $(".loginButton");
-
     public static LoginPage open () {
         return Selenide.open(LOGIN_URL, LoginPage.class);
     }
 
     public ProjectsPage login(User user) {
-        // Метод val вместо clear, sendKeys
         inputUsername.val(user.getUsername());
         inputPassword.val(user.getPassword());
         inputSubmitLogin.click();

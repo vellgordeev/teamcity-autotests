@@ -1,6 +1,7 @@
 package ru.gordeev.tests.web;
 
 import com.codeborne.selenide.Condition;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.gordeev.api.enums.Endpoint;
 import ru.gordeev.api.models.Project;
@@ -8,7 +9,7 @@ import ru.gordeev.web.pages.ProjectPage;
 import ru.gordeev.web.pages.ProjectsPage;
 import ru.gordeev.web.pages.create.CreateProjectPage;
 
-import static io.qameta.allure.Allure.step;
+import static com.codeborne.selenide.Condition.exactText;
 
 @Test(groups = {"Regression"})
 public class CreateProjectTest extends BaseUiTest {
@@ -16,23 +17,21 @@ public class CreateProjectTest extends BaseUiTest {
 
     @Test(description = "User should be able to create project", groups = {"Positive"})
     public void userCreatesProject() {
-        // подготовка окружения
+        // Set up environment
         loginAs(testData.getUser());
 
-        // взаимодействие с UI
+        // Interact with UI
         CreateProjectPage.open("_Root")
                 .createForm(REPO_URL)
                 .setupProject(testData.getProject().getName(), testData.getBuildType().getName());
 
-        // проверка состояния API
-        // (корректность отправки данных с UI на API)
+        // Verify API state (correct data sent from UI to API)
         var createdProject = superUserCheckRequests.<Project>getRequest(Endpoint.PROJECTS).read("name:" + testData.getProject().getName());
-        softy.assertNotNull(createdProject);
+        Assert.assertNotNull(createdProject);
 
-        // проверка состояния UI
-        // (корректность считывания данных и отображение данных на UI)
+        // Verify UI state (correct data retrieved and displayed on UI)
         ProjectPage.open(createdProject.getId())
-                .title.shouldHave(Condition.exactText(testData.getProject().getName()));
+                .titleShouldHave(exactText(testData.getProject().getName()));
 
         var foundProjects = ProjectsPage.open()
                 .getProjects().stream()
@@ -41,25 +40,19 @@ public class CreateProjectTest extends BaseUiTest {
         softy.assertTrue(foundProjects);
     }
 
-    @Test(description = "User should not be able to craete project without name", groups = {"Negative"})
+    @Test(description = "User should not be able to create project without name", groups = {"Negative"})
     public void userCreatesProjectWithoutName() {
-        // подготовка окружения
-        step("Login as user");
-        step("Check number of projects");
+        // Set up environment
+        loginAs(testData.getUser());
 
-        // взаимодействие с UI
-        step("Open `Create Project Page` (http://localhost:8111/admin/createObjectMenu.html)");
-        step("Send all project parameters (repository URL)");
-        step("Click `Proceed`");
-        step("Set Project Name");
-        step("Click `Proceed`");
+        // Interact with UI
+        CreateProjectPage.open("_Root")
+                .createForm(REPO_URL)
+                .setupProjectWithoutName(testData.getBuildType().getName())
+                .projectNameInputHasError(Condition.exactText("Project name must not be empty"));
 
-        // проверка состояния API
-        // (корректность отправки данных с UI на API)
-        step("Check that number of projects did not change");
-
-        // проверка состояния UI
-        // (корректность считывания данных и отображение данных на UI)
-        step("Check that error appears `Project name must not be empty`");
+        // Verify API state (incorrect data did not sent from UI to API)
+        var createdProject = superUserUncheckRequests.getRequest(Endpoint.PROJECTS).read("name:" + testData.getProject().getName());
+        softy.assertEquals(createdProject.statusCode(), 404);
     }
 }
