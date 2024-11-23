@@ -9,19 +9,13 @@ on:
         type: string
 
 jobs:
-  preparation:
+  validate-checkstyle:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
       - name: Make mvnw executable
         run: chmod +x ./mvnw
-
-  validate-checkstyle:
-    needs: preparation
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
       - name: Setup JDK
         uses: actions/setup-java@v4
@@ -33,10 +27,13 @@ jobs:
         run: ./mvnw validate
 
   run-tests:
-    needs: [preparation, validate-checkstyle]
+    needs: validate-checkstyle
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Make mvnw executable
+        run: chmod +x ./mvnw
 
       - name: TeamCity setup
         uses: ./.github/actions/teamcity-setup
