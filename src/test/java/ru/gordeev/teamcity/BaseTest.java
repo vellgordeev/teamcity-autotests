@@ -1,4 +1,4 @@
-package ru.gordeev.tests;
+package ru.gordeev.teamcity;
 
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;

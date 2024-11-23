@@ -1,4 +1,4 @@
-package ru.gordeev.tests.api;
+package ru.gordeev.teamcity.api;
 
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matchers;

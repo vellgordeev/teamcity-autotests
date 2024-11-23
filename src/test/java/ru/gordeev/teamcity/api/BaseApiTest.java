@@ -1,4 +1,4 @@
-package ru.gordeev.tests.api;
+package ru.gordeev.teamcity.api;
 
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
@@ -6,7 +6,7 @@ import ru.gordeev.teamcity.api.models.AuthModules;
 import ru.gordeev.teamcity.api.models.ServerAuthSettings;
 import ru.gordeev.teamcity.api.requests.non_crud.ServerAuthRequest;
 import ru.gordeev.teamcity.api.spec.Specifications;
-import ru.gordeev.tests.BaseTest;
+import ru.gordeev.teamcity.BaseTest;
 
 import static ru.gordeev.teamcity.api.generators.TestDataGenerator.generate;
 

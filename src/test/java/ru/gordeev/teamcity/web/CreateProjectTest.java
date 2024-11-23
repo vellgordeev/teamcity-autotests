@@ -1,4 +1,4 @@
-package ru.gordeev.tests.web;
+package ru.gordeev.teamcity.web;
 
 import com.codeborne.selenide.Condition;
 import org.testng.Assert;

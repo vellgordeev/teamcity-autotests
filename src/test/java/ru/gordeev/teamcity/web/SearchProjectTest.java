@@ -1,4 +1,4 @@
-package ru.gordeev.tests.web;
+package ru.gordeev.teamcity.web;
 
 import org.testng.annotations.Test;
 import ru.gordeev.teamcity.api.models.Project;
