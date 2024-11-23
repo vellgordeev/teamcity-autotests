@@ -3,6 +3,7 @@ package ru.gordeev.teamcity.web.pages;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Selenide.$;
 
@@ -17,10 +18,12 @@ public class FirstStartPage extends BasePage {
         restoreButton.shouldBe(Condition.visible, LONG_WAITING);
     }
 
+    @Step("Open the First Start Page")
     public static FirstStartPage open() {
         return Selenide.open("/", FirstStartPage.class);
     }
 
+    @Step("Perform first-time setup")
     public FirstStartPage setupFirstStart() {
         proceedButton.click();
         dbTypeSelect.shouldBe(Condition.visible, LONG_WAITING);
