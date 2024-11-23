@@ -13,6 +13,7 @@ import java.util.Map;
 import static ru.gordeev.api.enums.Endpoint.PROJECTS;
 import static ru.gordeev.api.enums.Endpoint.USERS;
 
+@Test(groups = {"Regression"})
 public class ProjectsTest extends BaseApiTest {
 
     @Test(description = "User should be able to find project by their name", groups = {"Positive"})

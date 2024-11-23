@@ -21,6 +21,7 @@ import java.util.List;
 import static ru.gordeev.api.enums.Endpoint.*;
 import static ru.gordeev.api.utils.PollingUtils.waitForCondition;
 
+@Test(groups = {"Regression"})
 public class BuildQueueTest extends BaseApiTest {
 
     @Test(description = "User should be able to start build", groups = {"Positive"})
