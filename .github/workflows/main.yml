@@ -27,7 +27,7 @@ jobs:
 
   # Wait for manual approval from authorized users
   manual-prod-approval:
-    needs: [automation-ui, automation-api]
+    needs: [automation-web, automation-api]
     runs-on: ubuntu-latest
     environment: 'production'
     steps:
