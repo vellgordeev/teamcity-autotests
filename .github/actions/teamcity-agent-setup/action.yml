@@ -18,6 +18,10 @@ runs:
           -v $(pwd)/tmp/teamcity_agent/conf:/data/teamcity_agent/conf \
           jetbrains/teamcity-agent:latest
 
+    - name: Wait for TeamCity Agent to connect
+      shell: bash
+      run: sleep 30
+
     - name: Set up Teamcity-Agent
       shell: bash
       run: ./mvnw clean test -Dtest=SetupTeamcityAgent#setupTeamCityAgentTest
