@@ -18,9 +18,7 @@ public class BaseTest {
     protected UncheckedRequests superUserUncheckRequests = new UncheckedRequests(Specifications.superUserAuth());
 
     @BeforeSuite
-    public void beforeSuite() {
-
-    }
+    public void beforeSuite() {}
 
     @BeforeMethod(alwaysRun = true)
     public void beforeTest() {

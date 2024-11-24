@@ -20,7 +20,7 @@ runs:
 
     - name: Wait for TeamCity Agent to connect
       shell: bash
-      run: sleep 30
+      run: sleep 10
 
     - name: Set up Teamcity-Agent
       shell: bash
