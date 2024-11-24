@@ -4,8 +4,11 @@ import lombok.Getter;
 import ru.gordeev.teamcity.api.models.*;
 import ru.gordeev.teamcity.api.requests.EndpointActions;
 import ru.gordeev.teamcity.api.requests.crud.CrudInterface;
+import ru.gordeev.teamcity.api.requests.non_crud.AgentAuthorizeInterface;
 import ru.gordeev.teamcity.api.requests.non_crud.BuildQueueInterface;
+import ru.gordeev.teamcity.api.requests.non_crud.checked.CheckedAgentAuthorizeRequest;
 import ru.gordeev.teamcity.api.requests.non_crud.checked.CheckedBuildQueueRequest;
+import ru.gordeev.teamcity.api.requests.non_crud.unchecked.UncheckedAgentAuthorizeRequest;
 import ru.gordeev.teamcity.api.requests.non_crud.unchecked.UncheckedBuildQueueRequest;
 
 @Getter
@@ -17,8 +20,11 @@ public enum Endpoint {
 
     // Non-CRUD endpoints with specific request handlers
     BUILD_QUEUE("/app/rest/buildQueue", Build.class,
-        BuildQueueInterface.class, CheckedBuildQueueRequest.class,
-        UncheckedBuildQueueRequest.class);
+            BuildQueueInterface.class, CheckedBuildQueueRequest.class,
+            UncheckedBuildQueueRequest.class),
+    AGENT_AUTHORIZE("/app/rest/agents/name:{name}/authorized", null,
+                    AgentAuthorizeInterface.class, CheckedAgentAuthorizeRequest.class,
+                    UncheckedAgentAuthorizeRequest.class);
 
     private final String url;
     private final Class<? extends BaseModel> modelClass;

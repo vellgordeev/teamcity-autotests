@@ -1,0 +1,23 @@
+name: Teamcity-Agent Setup
+
+runs:
+  using: composite
+  steps:
+    - name: Setup JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'zulu'
+
+    - name: Run TeamCity Agent
+      shell: bash
+      run: |
+        docker run -u 0 -d --name teamcity-agent \
+          -e SERVER_URL=http://$HOST:8111 \
+          -e TEAMCITY_AGENT_NAME=teamcityAgentFirst \
+          -v $(pwd)/tmp/teamcity_agent/conf:/data/teamcity_agent/conf \
+          jetbrains/teamcity-agent:latest
+
+    - name: Set up Teamcity-Agent
+      shell: bash
+      run: ./mvnw clean test -Dtest=SetupTeamcityAgent#setupTeamCityAgentTest

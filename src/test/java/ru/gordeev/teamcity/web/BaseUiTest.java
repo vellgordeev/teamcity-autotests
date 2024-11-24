@@ -6,11 +6,11 @@ import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeSuite;
+import ru.gordeev.teamcity.BaseTest;
 import ru.gordeev.teamcity.api.config.Config;
 import ru.gordeev.teamcity.api.enums.Endpoint;
 import ru.gordeev.teamcity.api.models.User;
 import ru.gordeev.teamcity.web.pages.LoginPage;
-import ru.gordeev.teamcity.BaseTest;
 
 import java.util.Map;
 
