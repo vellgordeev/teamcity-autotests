@@ -1,10 +1,5 @@
 name: Teamcity Setup
 
-inputs:
-  package:
-    description: api | web
-    required: true
-
 runs:
   using: composite
   steps:
@@ -30,7 +25,6 @@ runs:
       run: echo "host=$HOST:8111" >> src/main/resources/config.properties
 
     - name: Pull Selenoid browsers
-      if: ${{ inputs.package != 'api' }}
       shell: bash
       # Parse browsers.json and pull all required browser images
       run: |
@@ -39,7 +33,6 @@ runs:
         done
 
     - name: Run Selenoid
-      if: ${{ inputs.package != 'api' }}
       shell: bash
       # Use the -d flag to run the container in detached mode
       run: |
