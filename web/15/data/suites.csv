@@ -1,0 +1,2 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"failed","Sun Nov 24 12:28:21 GMT 2024","Sun Nov 24 12:28:21 GMT 2024","911","Surefire suite","Surefire test","ru.gordeev.teamcity.api.SetupTeamcityAgent","ru.gordeev.teamcity.api.SetupTeamcityAgent","setupTeamCityAgentTest","setupTeamCityAgentTest",""
