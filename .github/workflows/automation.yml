@@ -38,19 +38,22 @@ jobs:
       - name: TeamCity setup
         uses: ./.github/actions/teamcity-setup
 
+      - name: TeamCity-Agent setup
+        uses: ./.github/actions/teamcity-agent-setup
+
       - name: Run tests
         continue-on-error: true
         # Specify a test group to exclude setup-related tests
-        run: ./mvnw test -Dtest='ru.gordeev.teamcity.${{inputs.package}}.**' -Dgroups=Regression
+        run: ./mvnw test -Dtest='ru.gordeev.teamcity.${{ inputs.package }}.**' -Dgroups=Regression
 
       - name: Run Swagger Coverage
         continue-on-error: true
-        if: ${{inputs.package == 'api'}}
+        if: ${{ inputs.package == 'api' }}
         run: .swagger-coverage-commandline/bin/swagger-coverage-commandline -s http://$HOST:8111/app/rest/swagger.json -i target/swagger-coverage-output
 
       - name: Save Swagger Coverage
         uses: actions/upload-artifact@v4
-        if: ${{inputs.package == 'api'}}
+        if: ${{ inputs.package == 'api' }}
         with:
           name: swagger-coverage
           path: |

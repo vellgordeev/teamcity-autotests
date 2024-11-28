@@ -1,7 +1,6 @@
 package ru.gordeev.teamcity.web;
 
 import com.codeborne.selenide.Condition;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.gordeev.teamcity.api.enums.Endpoint;
 import ru.gordeev.teamcity.api.models.Project;
@@ -11,6 +10,7 @@ import ru.gordeev.teamcity.web.pages.create.CreateProjectPage;
 
 import static com.codeborne.selenide.Condition.exactText;
 import static io.qameta.allure.Allure.step;
+import static org.testng.Assert.assertNotNull;
 
 @Test(groups = {"Regression"})
 public class CreateProjectTest extends BaseUiTest {
@@ -31,7 +31,9 @@ public class CreateProjectTest extends BaseUiTest {
         step("Verify the project was created via API", () -> {
             var createdProject = superUserCheckRequests.<Project>getRequest(Endpoint.PROJECTS)
                     .read("name:" + testData.getProject().getName());
-            Assert.assertNotNull(createdProject);
+            assertNotNull(createdProject.getId());
+
+            testData.setProject(createdProject);
         });
 
         step("Verify the project appears correctly on the UI", () -> {
