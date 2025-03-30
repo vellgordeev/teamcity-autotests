@@ -2,8 +2,9 @@ package ru.gordeev.teamcity.api;
 
 import org.testng.annotations.Test;
 import ru.gordeev.teamcity.api.models.Project;
+import ru.gordeev.teamcity.api.models.Projects;
 import ru.gordeev.teamcity.api.requests.CheckedRequests;
-import ru.gordeev.teamcity.api.requests.crud.CheckedBase;
+import ru.gordeev.teamcity.api.requests.non_crud.checked.CheckedProjectRequests;
 import ru.gordeev.teamcity.api.spec.Specifications;
 import ru.gordeev.teamcity.api.utils.TestDataStorage;
 
@@ -26,9 +27,10 @@ public class ProjectsTest extends BaseApiTest {
         Map<String, String> searchParams = new HashMap<>();
         searchParams.put("locator", "name:" + testData.getProject().getName());
 
-        Project project = userCheckRequests.getRequest(PROJECTS, CheckedBase.class)
-            .searchProject(searchParams)
-            .getProject()
+        Projects projectsResult = userCheckRequests.getRequest(PROJECTS, CheckedProjectRequests.class)
+        .searchProject(searchParams);
+
+        Project project = projectsResult.getProject()
             .stream()
             .findFirst()
             .orElseThrow(() -> new RuntimeException("No project found"));

@@ -6,15 +6,13 @@ import org.apache.http.HttpStatus;
 import ru.gordeev.teamcity.api.enums.Endpoint;
 import ru.gordeev.teamcity.api.models.BaseModel;
 import ru.gordeev.teamcity.api.models.Projects;
-import ru.gordeev.teamcity.api.requests.EndpointActions;
 import ru.gordeev.teamcity.api.requests.Request;
-import ru.gordeev.teamcity.api.requests.non_crud.SearchProjectsInterface;
 import ru.gordeev.teamcity.api.utils.TestDataStorage;
 
 import java.util.Map;
 
 @SuppressWarnings("unchecked")
-public class CheckedBase<T extends BaseModel> extends Request implements CrudInterface, SearchProjectsInterface<T>, EndpointActions {
+public class CheckedBase<T extends BaseModel> extends Request implements CrudInterface {
     private final UncheckedBase uncheckedBase;
 
     public CheckedBase(RequestSpecification spec, Endpoint endpoint) {
@@ -56,17 +54,5 @@ public class CheckedBase<T extends BaseModel> extends Request implements CrudInt
             .delete(id)
             .then().assertThat().statusCode(HttpStatus.SC_OK)
             .extract().asString();
-    }
-
-    @Override
-    public Projects searchProject(Map searchParams) {
-        return RestAssured
-                .given()
-                .spec(spec)
-                .queryParams(searchParams)
-                .get(endpoint.getUrl())
-                .then()
-                .assertThat().statusCode(HttpStatus.SC_OK)
-                .extract().as(Projects.class);
     }
 }
