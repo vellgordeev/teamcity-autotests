@@ -28,8 +28,8 @@ This project demonstrates a framework for automated UI and API testing of the Te
 ## 🚀 Live Demo & Reports
 
 *   **CI Pipeline Runs:** [GitHub Actions](https://github.com/vellgordeev/teamcity-autotests/actions) (Select a recent successful run)
-*   🖥️ **Allure UI (Web) Test Report:** [Latest UI Report](https://vellgordeev.github.io/teamcity-autotests/web/latest/) (Link might need adjustment based on actual GitHub Pages structure)
-*   ⚙️ **Allure API Test Report:** [Latest API Report](https://vellgordeev.github.io/teamcity-autotests/api/latest/) (Link might need adjustment based on actual GitHub Pages structure)
+*   🖥️ **Allure UI (Web) Test Report:** [Latest UI Report](https://vellgordeev.github.io/teamcity-autotests/web/21/) 
+*   ⚙️ **Allure API Test Report:** [Latest API Report](https://vellgordeev.github.io/teamcity-autotests/api/21/)
 *   📊 **Swagger API Coverage Report:** Generated during CI run and available as a build artifact named `swagger-coverage` in the run summary.
 
 *(Note: Allure reports represent snapshots from specific runs. Using "latest" or specific run number links depends on your CI deployment strategy. Swagger coverage report needs to be downloaded from the artifacts of a specific API test run.)*
