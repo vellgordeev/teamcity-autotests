@@ -10,12 +10,13 @@ import ru.gordeev.teamcity.api.requests.non_crud.checked.CheckedAgentAuthorizeRe
 import ru.gordeev.teamcity.api.requests.non_crud.checked.CheckedBuildQueueRequest;
 import ru.gordeev.teamcity.api.requests.non_crud.unchecked.UncheckedAgentAuthorizeRequest;
 import ru.gordeev.teamcity.api.requests.non_crud.unchecked.UncheckedBuildQueueRequest;
+import ru.gordeev.teamcity.api.requests.non_crud.checked.CheckedProjectRequests;
+import ru.gordeev.teamcity.api.requests.non_crud.SearchProjectsInterface;
 
 @Getter
 public enum Endpoint {
     // CRUD endpoints
     BUILD_TYPES("/app/rest/buildTypes", BuildType.class, CrudInterface.class),
-    PROJECTS("/app/rest/projects", Project.class, CrudInterface.class),
     USERS("/app/rest/users", User.class, CrudInterface.class),
 
     // Non-CRUD endpoints with specific request handlers
@@ -24,7 +25,8 @@ public enum Endpoint {
             UncheckedBuildQueueRequest.class),
     AGENT_AUTHORIZE("/app/rest/agents/name:{name}/authorized", null,
                     AgentAuthorizeInterface.class, CheckedAgentAuthorizeRequest.class,
-                    UncheckedAgentAuthorizeRequest.class);
+                    UncheckedAgentAuthorizeRequest.class),
+    PROJECTS("/app/rest/projects", Project.class, SearchProjectsInterface.class, CheckedProjectRequests.class, null);
 
     private final String url;
     private final Class<? extends BaseModel> modelClass;
